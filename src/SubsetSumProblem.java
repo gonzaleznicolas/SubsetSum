@@ -12,6 +12,7 @@ class SubsetSumProblem
 		int[] weights = new  int[]{5, 10, 12, 7, 15, 13, 8, 25};
 		int maxWeight = 21;
 		
+		// input: a set of weights: w1, ... , wi , .... , wn
 		SubsetSumProblem ss = new SubsetSumProblem(weights, maxWeight);
 
 		ss.find_OPT();
@@ -24,7 +25,6 @@ class SubsetSumProblem
 	}
 	
 	private int OPT[][];
-	private Array_1D_1BasedIndexing v;	// input values
 	private Array_1D_1BasedIndexing w;	// input weights
 	private int n;						// number of inputs
 	private int targetW;				// maximum weight of knapsack
@@ -57,32 +57,36 @@ class SubsetSumProblem
 	  
 	}
 	
-	public HashSet<Integer> find_O_usualMethod(int tempN, int tempW)
+	public HashSet<Integer> find_O_usualMethod(int i, int tempW)
 	{
-		if (tempN==0)
+		// i means we are considering the first i weights of the original input
+		// input: a set of weights: w1, ... , wi , .... , wn
+		if (i==0)
 			return new HashSet<Integer>();
-		else if (w.get(tempN)>tempW)
-			return find_O_usualMethod(tempN-1, tempW);
-		else if (OPT[tempN-1][tempW] > (OPT[tempN-1][tempW-w.get(tempN)] + w.get(tempN)))
-			return find_O_usualMethod(tempN-1, tempW);
+		else if (w.get(i)>tempW)
+			return find_O_usualMethod(i-1, tempW);
+		else if (OPT[i-1][tempW] > (OPT[i-1][tempW-w.get(i)] + w.get(i)))
+			return find_O_usualMethod(i-1, tempW);
 		else
 		{
-			HashSet<Integer> set = find_O_usualMethod(tempN-1, tempW-w.get(tempN));
-			set.add(tempN);
+			HashSet<Integer> set = find_O_usualMethod(i-1, tempW-w.get(i));
+			set.add(i);
 			return set;
 		}
 	}
 	
-	public HashSet<Integer> find_O_alternativeMethod(int tempN, int tempW)
+	public HashSet<Integer> find_O_alternativeMethod(int i, int tempW)
 	{
-		if (tempN==0 || tempW == 0)
+		// i means we are considering the first i weights of the original input
+		// input: a set of weights: w1, ... , wi , .... , wn
+		if (i==0 || tempW == 0)
 			return new HashSet<Integer>();
-		else if (OPT[tempN][tempW] == OPT[tempN-1][tempW])
-			return find_O_alternativeMethod(tempN-1, tempW);
+		else if (OPT[i][tempW] == OPT[i-1][tempW])
+			return find_O_alternativeMethod(i-1, tempW);
 		else
 		{
-			HashSet<Integer> set = find_O_alternativeMethod(tempN-1, tempW-w.get(tempN));
-			set.add(tempN);
+			HashSet<Integer> set = find_O_alternativeMethod(i-1, tempW-w.get(i));
+			set.add(i);
 			return set;
 		}
 	}
