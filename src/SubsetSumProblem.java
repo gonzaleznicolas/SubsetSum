@@ -79,7 +79,7 @@ class SubsetSumProblem
 	{
 		// i means we are considering the first i weights of the original input
 		// input: a set of weights: w1, ... , wi , .... , wn
-		if (i==0 || tempW == 0)
+		if (i==0)
 			return new HashSet<Integer>();
 		else if (OPT[i][tempW] == OPT[i-1][tempW])
 			return find_O_alternativeMethod(i-1, tempW);
